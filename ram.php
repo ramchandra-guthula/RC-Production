@@ -1,7 +1,7 @@
 <?php
 $servername = "ramdb.cbbcw13tzpvs.eu-west-2.rds.amazonaws.com";
 $username = "ramdb";
-$password = "RAM2304201*";
+$password = "*****";
 $dbname = "ramdb";
 $id = $_POST["id"];
 $lastname = $_POST["lastname"];
