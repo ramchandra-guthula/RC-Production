@@ -17,13 +17,13 @@ pipeline {
             }
         }
         stage('list'){
-            script {
-                def foo = "bar"
-            }
             steps{
+                script {
+                foo = "bar"
+            }
                 sh"""
                 ls -lrt
-                echo "${bar}"
+                echo "${foo}"
                 """
             }
         }
