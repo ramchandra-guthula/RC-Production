@@ -12,15 +12,51 @@ pipeline {
     stages {
         
         stage('Clone repo'){
+			 when {
+		  expression {
+		  params.ENV == "PROD"
+		  }
+		  }
+
             steps{
                 
             echo "===================We are cloning the GIT Repo============================\n"  
 			echo "===================Running in ENV ${env.ENV}==============================\n"
             git credentialsId: 'ram_github_credentials', url: 'https://github.com/ramchandra-guthula/RC-Production.git'
             
-            }
         }
+		}
+		
+		
+		
+/*		stage('IF test'){
+		steps{
+		script {
+				echo "=============I am in Branch: ${BRANCH_NAME}==================="
+				if (${BRANCH_NAME} == 'master') {
+					echo 'I only execute on the master branch'
+				} else {
+					echo 'I execute elsewhere'
+				}
+                }
+			}	
+		
+		} */
         
+		stage('SSH'){
+		steps {
+		withCredentials([sshUserPrivateKey(credentialsId: 'devops_ssh_key', keyFileVariable: 'private_key', passphraseVariable: '', usernameVariable: 'user_name')]) {
+		
+			sh '''
+			ssh -i $private_key $user_name@52.66.79.232
+			ls -lrt /var/log/
+			'''
+			}
+		
+		
+		}
+		
+		}
         stage('work_space') {
             steps {
                 echo "maven home path${mvn_home}"
