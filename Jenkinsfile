@@ -27,21 +27,24 @@ pipeline {
         }
 		}
 		
-		
-		
-/*		stage('IF test'){
-		steps{
-		script {
-				echo "=============I am in Branch: ${BRANCH_NAME}==================="
-				if (${BRANCH_NAME} == 'master') {
-					echo 'I only execute on the master branch'
-				} else {
-					echo 'I execute elsewhere'
+		stage('try and catch'){
+			steps{
+				script{
+				 try{
+					sh '''
+					  set +x
+					  echo "=== GitHub ==="
+
+					  '''
+						  }
+					catch (Exception e) {
+					unstable("${STAGE_NAME} failed! due to issue with echo block")
+					echo "${e}"
+					currentBuild.result = "SUCCESS"
+				  }
 				}
-                }
-			}	
-		
-		} */
+			}
+		}
         
 		stage('SSH'){
 		steps {
